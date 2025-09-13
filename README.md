@@ -59,8 +59,8 @@ If you disagree with these choices, this template will make you _very_ unhappy. 
 Instead of running `django-admin startproject` to start your new project, clone this repo in a directory of your choosing
 
 ```bash
-git clone https://github.com/yourusername/your-amazing-project.git <new-directory>
-cd <new-directory>
+git clone https://github.com/CynthiaWahome/django-starter-project.git django-starter
+cd django-starter
 ```
 
 ### Method 2 :**One command to rule them all:**
@@ -283,5 +283,3 @@ This template stands on the shoulders of giants:
 ## 📄 License
 
 MIT License - Use it, abuse it, make money with it. Just don't blame me when your startup becomes a unicorn and you forget to invite me to the IPO party.
-
-
