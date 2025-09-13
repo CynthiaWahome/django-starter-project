@@ -1,52 +1,88 @@
-# Django Starter Project
+# 🚀 Modern Django Starter Project
 
-An opinionated boilerplate for your Django projects.
+> Quite the opionionated Django starter template
+
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+[![Django 5.2](https://img.shields.io/badge/django-5.2-green.svg)](https://docs.djangoproject.com/en/5.2/)
+[![UV](https://img.shields.io/badge/dependency_manager-uv-purple.svg)](https://github.com/astral-sh/uv)
+[![Ruff](https://img.shields.io/badge/linter-ruff-red.svg)](https://github.com/astral-sh/ruff)
+[![MyPy](https://img.shields.io/badge/type_checker-mypy-blue.svg)](https://mypy.readthedocs.io/)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-brightgreen.svg)](https://docs.github.com/en/github/administering-a-repository/keeping-your-dependencies-updated-automatically)
+[![Code style: Ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+
+This template assumes you want:
+
+- ⚡ **Speed over flexibility** (UV instead of Poetry/pip)
+- 🧹 **Fewer tools that do more** (Ruff instead of Black + Flake8 + isort)
+- 🔍 **Type safety** (because `Any` is not a type)
+- 🤖 **Automation** (Dependabot keeping you current)
+- 🎨 **Consistency** (standardized everything)
+
+If you disagree with these choices, this template will make you _very_ unhappy. Consider yourself warned! 😈
 
 ## 🎖 Tool Choices
 
-- **Env Variables Manager**: [Django Environ](https://github.com/joke2k/django-environ)
-- **Package manager:** [Poetry](https://python-poetry.org/)
-- **Database:** [PostgreSQL](https://www.postgresql.org/)
-- **Task Queue:** [Celery](http://www.celeryproject.org/) with [Redis](https://redis.io/)
-- **Testing:** [PyTest](https://docs.pytest.org/en/latest/)
-- **Logging:** [Sentry](https://sentry.io)
-- **Python Code Formatter**: [Black](https://github.com/psf/black)
-- **Static File Storage:** [AWS S3](https://aws.amazon.com/s3/) or [Digital Ocean Spaces](https://www.digitalocean.com/products/spaces/)
-- **Dev Orchestration:** [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-- **Static File Compiler:** [Webpack](https://webpack.js.org/)
-- **JS lint:** [ESLint](https://eslint.org/)
-- **Style lint:** [Stylelint](https://github.com/stylelint/stylelint)
+| Category               | Choice                                                                                                                     | Why This & Not That                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Dependency Manager** | [UV](https://github.com/astral-sh/uv)                                                                                      | 10x faster than Poetry. Life's too short for slow installs.                                        |
+| **Code Formatter**     | [Ruff](https://github.com/astral-sh/ruff)                                                                                  | Replaces Black + Flake8 + isort + 12 other tools. One tool to rule them all.                       |
+| **Type Checker**       | [MyPy](https://mypy.readthedocs.io/)                                                                                       | Because `def process_data(data):` tells us nothing about what happens when you pass it a sandwich. |
+| **Database**           | [PostgreSQL](https://www.postgresql.org/)                                                                                  | SQLite is for prototypes. This is for production.                                                  |
+| **Task Queue**         | [Celery](http://www.celeryproject.org/) + [Redis](https://redis.io/)                                                       | Send emails without blocking the UI. Revolutionary!                                                |
+| **Testing**            | [PyTest](https://docs.pytest.org/) + [Hypothesis](https://hypothesis.readthedocs.io/)                                      | Property-based testing finds bugs you didn't know you had.                                         |
+| **Security Scanner**   | [Bandit](https://bandit.readthedocs.io/)                                                                                   | Catches security issues before your CISO does.                                                     |
+| **Dependency Updates** | [Dependabot](https://docs.github.com/en/github/administering-a-repository/keeping-your-dependencies-updated-automatically) | Auto-updates dependencies so you don't have to remember.                                           |
+| **Web Server**         | [Caddy](https://caddyserver.com/)                                                                                          | Automatic HTTPS. It's 2025, people!                                                                |
+| **Containerization**   | [Docker](https://www.docker.com/)                                                                                          | "Works on my machine" → "Works on every machine"                                                   |
+| **Static Assets**      | [Webpack](https://webpack.js.org/)                                                                                         | Because `<script src="jquery-1.4.2-final-FINAL-v2.js">` is not a build system.                     |
 
-## 🤓 Getting started
+## 📋 Prerequisites (The Boring But Necessary Stuff)
 
-This is a guide on how to use this repo and save hours of boring configuration.
+**Required (or your project will explode):**
 
-### 1) Add the boilerplate
+- Python 3.12+ (3.11 if you enjoy living dangerously)
+- PostgreSQL 12+ (because you're not a savage)
+- Redis 6+ (for caching and background tasks)
+- UV package manager (the future is here)
+
+**Optional (for the full experience):**
+
+- Node.js 18+ (for asset compilation)
+- Docker (for "works on everyone's machine")
+
+## 🚀 Getting Started
+
+### Method 1: Use This Template (Recommended for Humans)
+
+**Click "Use this template"**
 
 Instead of running `django-admin startproject` to start your new project, clone this repo in a directory of your choosing
 
-    git clone git@github.com:fceruti/django-starter-project.git <new-directory>
+```bash
+git clone https://github.com/yourusername/your-amazing-project.git <new-directory>
+cd <new-directory>
+```
 
-At this point you may either
+### Method 2 :**One command to rule them all:**
 
-1. Start a clean git repo by removing the `.git` directory and then running `git init`.
-2. Receive patches and updates of this repo by modifying `.git/config` and switch `[remote "origin"]` for `[remote "upstream"]`, and then add your own `origin` by running `git remote add origin <your_repo>`.
+```bash
+python scripts/setup_project.py
+```
 
-### 2) Set environment variables
+This magical script will:
 
-Following the [12 Factor App Guide](https://www.12factor.net/), we will configure our app by setting the configuration variables in the environment. To do that, just create a file named `.env` in the root of the project and [django-environ](https://github.com/joke2k/django-environ) will pick it up and populate our settings.
+- Install UV (if you forgot)
+- Install all dependencies
+- Setup pre-commit hooks (no more "oops" commits)
+- Create and migrate database
+- Collect static files
+- Make you coffee ☕ (just kidding, but everything else is real)
 
-You may use the example file as a starting point:
+At this point you may start a clean git repo by removing the `.git` directory and then running `git init`.
 
-    cp .env.example .env
-
-### 3) Create and migrate database
-
-I'll call this database `django_db` for the purposes of this guide, but you can call it whatever you want. Just watch out for careless copy-pasting.
-
-Now run
-
-    poetry run migrate
+```bash
+cp .env.example .env
+```
 
 ### 4) Run the project
 
@@ -54,202 +90,198 @@ You have two choices, either you turn every service on your own or you use docke
 
 #### A) Use Docker Compose
 
-We need to override `DATABASE_URL` environment variable inside of the Docker containers to connect directly to your host machine. Create a file called `.env.docker` with the following content:
-
+```bash
+docker-compose up --build
 ```
-DATABASE_URL=postgres://<user>@host.docker.internal:5432/django_db
-```
-
-- **user** is the user on your host machine that has access to postgres in this case.
-
-Now we are ready to start the project.
-
-    docker-compose up
-
 
 Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) and you'll see your site up and running 🧘‍♀️
 
 #### B) Run by yourself
 
-First of all, install [pyenv](https://github.com/pyenv/pyenv) so you can use the specified python version in `.python-version` file. Then, install [poetry](https://python-poetry.org/docs/), which is a package manager replacement for pip. Now install all the project's dependencies with
-
-    poetry install
-
 Make sure you have `redis-server` running and finally on 3 separate consoles run:
 
 **server**
 
-    poetry run worker
+```bash
+uv run python manage.py runserver
+```
 
 **worker**
 
-    poetry run server
-
+```bash
+uv run celery -A conf worker --loglevel=info
+```
 
 **webpack**
 
-    cd assets
-    npm install
-    npm run dev
+```bash
+cd assets
+npm install
+npm run dev
+```
 
 Visit [http://127.0.0.1:8000](http://127.0.0.1:8000) and you'll see your site up and running 🧘‍♀️
 
-## 🧞‍♂️ Shortcuts
+## 📁 Project Structure (Organized Like Your Life Should Be)
 
-### Docker commands
+```
+django-starter-project/
+├── 📁 apps/                   # Your Django applications
+│   ├── 📁 common/             # Shared utilities
+│   ├── 📁 misc/               # Miscellaneous utilities
+│   └── 📁 users/              # User management
+├── 📁 assets/                 # Frontend assets (SCSS, JS, images)
+├── 📁 conf/                   # Django project configuration
+│   ├── settings.py           # The main settings file
+│   ├── urls.py               # Root URL configuration
+│   ├── wsgi.py               # WSGI entrypoint
+│   └── celery.py             # Celery configuration
+├── 📁 scripts/                # Utility and setup scripts
+│   ├── 📄 entrypoint-django.sh # Docker entrypoint script for Django
+│   ├── 📄 entrypoint-celery.sh # Docker entrypoint script for Celery
+│   ├── setup_db.sh           # Database setup script
+│   └── setup_project.py      # Project setup automation
+├── 📁 templates/              # Django templates
+├── 📁 tests/                  # Test suite
+│   ├── conftest.py           # Pytest configuration
+│   ├── test_int.py           # Integration tests
+│   └── test_responses.py     # Response tests
+├── 📄 .env.example           # Environment variable template
+├── 📄 .gitignore             # Git ignore rules
+├── 📄 .pre-commit-config.yaml # Pre-commit hook definitions
+├── 📄 Caddyfile              # Caddy web server configuration
+├── 📄 docker-compose.yml     # Docker Compose orchestration
+├── 📄 Dockerfile             # Main container definition
+├── 📄 manage.py               # Django's command-line utility
+├── 📄 pyproject.toml         # Project metadata and dependencies (PEP 621)
+└── 📄 README.md              # This file
+```
 
-Here are a few commands that may come in handy
+## 🎯 API Standards (Because Consistency Is Beautiful)
 
-| Command                                                               | Description                                                   |
-| --------------------------------------------------------------------- | ------------------------------------------------------------- |
-| `docker ps`                                                           | List all containers (-a to include stopped)                   |
-| `docker system df -v`                                                 | Display a list of all images, containers and volumes          |
-| `docker logs --follow <container_id>`                                 | Display the logs of a container                               |
-| `docker exec -it <container_id> /bin/bash`                            | Attach into a running container                               |
-| `docker run --rm <image_name> /bin/bash`                              | Run a docker container based on an image and get a prompt     |
-| `docker-compose run --rm web /bin/bash`                               | Same as before but for services defined in docker-compose.yml |
-| `docker-compose run --rm web /bin/bash -c 'python manage.py migrate'` | Run a management command                                      |
+All API endpoints follow a standardized response format:
 
-### Poetry commands
+### Success Response
 
-These shortcuts are at your disposal:
-
-| Command                     | Shortcut for                                    |
-| --------------------------- | ----------------------------------------------- |
-| `poetry run tests`          | `poetry run pytest tests/`                      |
-| `poetry run server`         | `poetry run python manage.py runserver_plus`    |
-| `poetry run worker`         | `poetry run python manage.py celery_autoreload` |
-| `poetry run shell`          | `poetry run python manage.py shell_plus`        |
-| `poetry run makemigrations` | `poetry run python manage.py makemigrations`    |
-| `poetry run migrate`        | `poetry run python manage.py migrate`           |
-
-To compile your static files, you need to have npm installed and all the local dependencies (run `npm install`). Then can execute the following commands
-| Command              | Shortcut for                                  |
-| -------------------- | --------------------------------------------- |
-| `npm run dev`        | `webpack --mode development --env dev--watch` |
-| `npm run build_stg`  | `webpack --mode production --env stg`         |
-| `npm run build_prod` | `webpack --mode production --env prod`        |
-| `npm run lint:js`    | `eslint js/** --fix`                          |
-| `npm run lint:csss`  | `stylelint scss/*.scss --syntax scss`         |
-
-## 🎛 Environment variables
-
-These environment variables can be provided to configure your project.
-
-### Django
-
-| Name                | Values                            | Default                                     | Description                                                                                                                   |
-| ------------------- | --------------------------------- | ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| ENV                 | dev, test, qa, prod               | prod                                        | Indicates in which environment the project is running on                                                                      |
-| DEBUG               | on, off                           | off                                         | Run server in debug mode                                                                                                      |
-| LANGUAGE_CODE       | Language Identifier (RFC 3066)    | en-US                                       | [List of language codes](http://www.i18nguy.com/unicode/language-identifiers.html)                                            |
-| TIME_ZONE           | Record of IANA time zone database | America/Santiago                            | [List of timezones](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)                                             |
-| USE_I18N            | on, off                           | on                                          | Enable translation system                                                                                                     |
-| USE_L10N            | on, off                           | on                                          | Enable localized formatting                                                                                                   |
-| USE_TZ              | on, off                           | on                                          | Enable timezone aware dates in                                                                                                |
-| DEFAULT_FROM_EMAIL  | E-mail address                    | --                                          | Email address from which transactional emails will be sent from                                                               |
-| EMAIL_BACKEND       | Path to backend                   | django.core.mail.backends.smtp.EmailBackend | The backend to use for sending emails. [List of backends](https://docs.djangoproject.com/en/2.2/topics/email/#email-backends) |
-| SECRET_KEY          | Random string                     | --                                          | Used to provide cryptographic signing                                                                                         |
-| ALLOWED_HOSTS       | List of domains                   | --                                          | Represents the host/domain names that this site can serve.                                                                    |
-| DJANGO_DATABASE_URL | Database url                      | --                                          | Describes the database connection with [a url structure](https://github.com/joke2k/django-environ).                           |
-| LOGIN_URL           | Url                               | /login/                                     | Url to redirect users when login is needed                                                                                    |
-| LOGIN_REDIRECT_URL  | Url                               | /                                           | Url to redirect users after login in                                                                                          |
-| STATIC_URL          | Url                               | /static/                                    | Url from which static files are served                                                                                        |
-| MEDIA_URL           | Url                               | /media/                                     | Url from which media files are served                                                                                         |
-| STATIC_ROOT         | Directory path                    | \${project_root}/static                     | Directory where all static files will be collected to                                                                         |
-| MEDIA_ROOT          | Directory path                    | \${project_root}/media                      | Directory where all uploaded files will be stored                                                                             |
-| LOGS_ROOT           | Directory path                    | \${project_root}/logs                       | Directory where all logs will be stored                                                                                       |
-
-### Celery
-
-| Name                     | Values       | Default | Description                                                                                                 |
-| ------------------------ | ------------ | ------- | ----------------------------------------------------------------------------------------------------------- |
-| CELERY_BROKER_URL        | Database url | --      | A common value for development is to use redis://cache, but it's recommended for production to use RabbitMQ |
-| CELERY_TASK_ALWAYS_EAGER | on, off      | off     | If this is True, all tasks will be executed locally by blocking until the task returns.                     |
-
-### Django Storages
-
-[Documentation](https://django-storages.readthedocs.io/en/latest/)
-
-| Name                    | Values  | Default | Description                  |
-| ----------------------- | ------- | ------- | ---------------------------- |
-| USE_S3_STATIC_STORAGE   | on, off | off     | Whether or not to use S3     |
-| AWS_ACCESS_KEY_ID       | str     | --      | AWS Access key id            |
-| AWS_SECRET_ACCESS_KEY   | str     | --      | AWS Secret access key        |
-| AWS_STORAGE_BUCKET_NAME | str     | --      | Name of S3 bucket to be used |
-
-#### Django Debug Toolbar
-
-| Name              | Values  | Default | Description                  |
-| ----------------- | ------- | ------- | ---------------------------- |
-| USE_DEBUG_TOOLBAR | on, off | off     | Enables django debug toolbar |
-
-#### Logging & Sentry
-
-| Name       | Values  | Default | Description                                       |
-| ---------- | ------- | ------- | ------------------------------------------------- |
-| LOGS_ROOT  | path    | --      | Path to the directory where logs are to be stored |
-| USE_SENTRY | on, off | off     | Enables sentry                                    |
-| SENTRY_DSN | string  | --      | Private URL-like configuration                    |
-
-## ♻️ VSCode settings
-
-Nowadays, my go-to editor is VSCode, so here's a template for `.vscode/settings.json`:
-
-    {
-      // Editor
-      "editor.formatOnSave": true,
-
-      "files.exclude": {
-        "**/__pycache__": true,
-        "**/.pytest_cache": true,
-        "**/*.egg-info": true
-      },
-
-      // Search
-      "search.exclude": {
-        "**/.git": true,
-        "**/.vscode": true,
-        "**/node_modules": true,
-        "**/static": true,
-        "**/media": true,
-        "**/logs": true,
-        "**/tmp": true,
-        "**/locale": true
-      },
-      "search.showLineNumbers": true,
-
-      // Python
-      "python.venvPath": "<env_path>",
-      "python.envFile": "${workspaceFolder}/.env",
-      "python.jediEnabled": false,
-
-      // Linting
-      "python.linting.enabled": true,
-      "python.linting.pylintEnabled": true,
-      "python.linting.flake8Enabled": true,
-      "python.formatting.provider": "black",
-      "python.linting.pylintArgs": [
-        "--load-plugins",
-        "pylint_django",
-        "--rcfile",
-        "setup.cfg"
-      ],
-
-      // Eslint
-      "eslint.options": {
-        "configFile": ".eslintrc.json"
-      },
-      "eslint.nodePath": "assets/node_modules",
-      "eslint.workingDirectories": ["assets/"],
-      "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true
-      },
-
-      // Stylelint
-      "css.validate": false,
-      "less.validate": false,
-      "scss.validate": false
+```json
+{
+  "success": true,
+  "message": "Data retrieved successfully",
+  "data": {
+    "user": {
+      "id": 1,
+      "email": "user@example.com",
+      "created_at": "2025-01-01T00:00:00Z"
     }
+  },
+  "error": null,
+  "metadata": {}
+}
+```
 
-To fill the `python.venvPath` run `poetry show -v` to see the path to your virtual environment.
+### Error Response
+
+```json
+{
+  "success": false,
+  "message": "Validation failed",
+  "data": null,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "details": {
+      "email": ["This field is required."],
+      "password": ["Password must be at least 8 characters."]
+    }
+  },
+  "metadata": {}
+}
+```
+
+### Paginated Response
+
+```json
+{
+  "success": true,
+  "message": "Users retrieved successfully",
+  "data": [
+    { "id": 1, "name": "Alice" },
+    { "id": 2, "name": "Bob" }
+  ],
+  "error": null,
+  "metadata": {
+    "pagination": {
+      "total_items": 42,
+      "total_pages": 5,
+      "current_page": 1,
+      "per_page": 10,
+      "has_next": true,
+      "has_previous": false
+    }
+  }
+}
+```
+
+## ♻️ Zed Editor Settings
+
+This project includes optimized Zed configuration in `.zed/settings.json`:
+
+```json
+{
+  "format_on_save": "on",
+  "formatter": "ruff",
+  "linter": "ruff",
+  "tab_size": 4,
+
+  "languages": {
+    "Python": {
+      "format_on_save": "on",
+      "formatter": {
+        "external": {
+          "command": "uv",
+          "arguments": ["run", "ruff", "format", "-"]
+        }
+      }
+    }
+  }
+}
+```
+
+## 🔒 Security Features (Because Hackers Don't Sleep)
+
+- **Django 5.2** with latest security patches
+- **CSP headers** configured
+- **HTTPS redirect** in production
+- **Secure cookie settings**
+- **SQL injection protection** via ORM
+- **XSS protection** with template escaping
+- **CSRF protection** enabled
+- **Security middleware** stack
+- **Bandit security scanner** in CI/CD
+
+## 🎉 What's Next? (Your Journey Begins)
+
+After setup, you're ready to:
+
+1. **Create your first app**: `uv run python manage.py startapp your_app`
+2. **Move it to apps directory**: `mv your_app apps/`
+3. **Add to INSTALLED_APPS**: Update `conf/settings/base.py`
+4. **Create models**: Define your data structure
+5. **Write tests first**: TDD for the win
+6. **Build APIs**: Use the standardized response format
+7. **Deploy with confidence**: Follow the deployment checklist
+
+## 🙏 Credits & Inspiration
+
+This template stands on the shoulders of giants:
+
+- **Original foundation**: [fceruti/django-starter-project](https://github.com/fceruti/django-starter-project) - The OG Django starter
+- **Enterprise inspiration**: [wemake-services/wemake-django-template](https://github.com/wemake-services/wemake-django-template) - Serious business template
+- **Documentation style**: [FastAPI](https://fastapi.tiangolo.com/) - Made docs fun again
+- **Modern tooling**: [Astral](https://astral.sh/) - UV and Ruff creators
+- **Dependabot**: GitHub's automated dependency updates
+
+## 📄 License
+
+MIT License - Use it, abuse it, make money with it. Just don't blame me when your startup becomes a unicorn and you forget to invite me to the IPO party.
+
+
