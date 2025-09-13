@@ -24,13 +24,13 @@ COPY README.md ./
 
 # Default to production dependencies for safety.
 # Override with --build-arg INSTALL_EXTRAS=production for production builds.
-ARG INSTALL_EXTRAS=development 
+ARG INSTALL_EXTRAS=development
 ENV INSTALL_EXTRAS=${INSTALL_EXTRAS}
 
 # Install Python dependencies in a virtual environment
 RUN uv venv --clear /opt/venv \
   && uv pip install --no-cache-dir ".[${INSTALL_EXTRAS}]" --python /opt/venv/bin/python \
-  && uv pip list --python /opt/venv/bin/pytho
+  && uv pip list --python /opt/venv/bin/python
 
 # Copy project files
 COPY apps/ ./apps/
