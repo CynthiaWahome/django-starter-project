@@ -13,4 +13,10 @@ assets/node_modules
 logs
 media
 static
-README.md
+.venv/
+.uv-cache/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
