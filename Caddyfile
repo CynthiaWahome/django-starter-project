@@ -1,0 +1,17 @@
+# Development configuration
+:8080 {
+    reverse_proxy django:8000
+    log {
+        output stdout
+        format console
+    }
+}
+
+# Production configuration (uncomment for production)
+# yourdomain.com {
+#     reverse_proxy django:8000
+#     encode gzip
+#     log {
+#         output file /var/log/caddy/access.log
+#     }
+# }

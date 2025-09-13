@@ -1,4 +1,5 @@
 import os
+import re
 
 import environ
 
@@ -40,6 +41,7 @@ EMAIL_BACKEND = env(
 SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
 AUTH_USER_MODEL = "users.User"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"
@@ -55,8 +57,8 @@ LOGIN_REDIRECT_URL = env("LOGIN_REDIRECT_URL", default="/")
 # -----------------------------------------------------------------------------
 # Databases
 # -----------------------------------------------------------------------------
-DJANGO_DATABASE_URL = env.db("DATABASE_URL")
-DATABASES = {"default": DJANGO_DATABASE_URL}
+DJANGO_DB_URL = env.db("DB_URL")
+DATABASES = {"default": DJANGO_DB_URL}
 
 # -----------------------------------------------------------------------------
 # Applications configuration
@@ -74,6 +76,7 @@ INSTALLED_APPS = [
     "conf.apps.CustomAdminConfig",
     "apps.misc",
     "apps.users",
+    "apps.common",
 ]
 
 MIDDLEWARE = [
@@ -118,17 +121,20 @@ STATICFILES_DIRS = (
     ("img", root_path("assets/img")),
 )
 
-webpack_stats_filename = "webpack-bundle.%s.json" % ENV
+webpack_stats_filename = f"webpack-bundle.{ENV}.json"
 stats_file = os.path.join(root_path("assets/bundles/"), webpack_stats_filename)
 
 WEBPACK_LOADER = {
     "DEFAULT": {
-        "CACHE": not DEBUG,
+        "CACHE": False,
         "BUNDLE_DIR_NAME": "bundles/",  # must end with slash
         "STATS_FILE": stats_file,
         "POLL_INTERVAL": 0.1,
         "TIMEOUT": None,
-        "IGNORE": [r".+\.hot-update.js", r".+\.map"],
+        "IGNORE": [
+            re.compile(r".+\.hot-update\.js"),
+            re.compile(r".+\.map$"),
+        ],
     }
 }
 

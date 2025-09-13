@@ -12,6 +12,7 @@ class TimestampedModel(models.Model):
 
 
 class KeyModel(TimestampedModel):
+    objects = models.Manager()
     key = models.CharField(
         max_length=255, unique=True, db_index=True, null=False, blank=True
     )

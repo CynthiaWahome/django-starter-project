@@ -1,59 +1,79 @@
-version: "3"
-
 services:
-  web:
-    image: dev_server
-    build:
-      context: .
-      dockerfile: Dockerfile
+  db:
+    image: postgres:15
     volumes:
-      - .:/code
-      - ./logs/web:/logs
-      - ./media:/uploads
-    command: poetry run python manage.py runserver_plus 0.0.0.0:8000
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: ${DBNAME}
+      POSTGRES_USER: ${DBUSER}
+      POSTGRES_PASSWORD: ${DBPASS}
     ports:
-      - 8000:8000
-    env_file:
-      - .env
-      - .env.docker
-    environment:
-      - ALLOWED_HOSTS="*"
-      - BROKER_URL=redis://cache
-      - MEDIA_ROOT=/uploads
-      - LOGS_ROOT=/logs
-    links:
-      - redis:cache
-
-  worker:
-    image: dev_worker
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - .:/code
-      - ./logs/worker:/logs
-      - ./media:/uploads
-    command: poetry run worker
-    env_file:
-      - .env
-      - .env.docker
-    environment:
-      - BROKER_URL=redis://cache
-      - MEDIA_ROOT=/uploads
-      - LOGS_ROOT=/logs
-    links:
-      - redis:cache
+      - "5432:5432"
 
   redis:
-    image: redis
-    expose:
-      - "6379"
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
 
-  webpack:
-    image: dev_webpack
+  django:
     build:
       context: .
-      dockerfile: Dockerfile-webpack
+      args:
+        INSTALL_EXTRAS: development
+    entrypoint: /app/scripts/entrypoint-django.sh
+    command: uv run python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=1
+      - DB_URL=${DB_URL_DOCKER}
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      - db
+      - redis
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "8080:8080"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - django
+
+  celery:
+    build:
+      context: .
+    entrypoint: /app/scripts/entrypoint-celery.sh
+    command: celery -A conf worker --loglevel=info
+    user: "1000:1000"
+    volumes:
+      - .:/app
+    environment:
+      - DB_URL=${DB_URL_DOCKER}
+      - REDIS_URL=${REDIS_URL}
+    depends_on:
+      - db
+      - redis
+
+  webpack:
+    build:
+      context: ./assets
+      dockerfile: ../Dockerfile-webpack
     volumes:
       - ./assets:/code
+      - webpack_node_modules:/code/node_modules # Persist node_modules
+    ports:
+      - "3000:3000"
     command: npm run dev
+
+volumes:
+  webpack_node_modules:
+  postgres_data:
+  caddy_data:
+  caddy_config:

@@ -1,16 +1,20 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
-const webpack = require("webpack");
 const BundleTracker = require("webpack-bundle-tracker");
 
 const resolve = path.resolve.bind(path, __dirname);
 
-module.exports = (env, argv) => {
+module.exports = (env = {}, argv = {}) => {
+  const environment = env.NODE_ENV || process.env.NODE_ENV || 'dev';
+  const mode = argv.mode || 'development';
+  
   let output;
   let extractCssPlugin;
   let fileLoaderName;
+  let publicPath;
+  let outputPath;
 
-  switch (env) {
+  switch (environment) {
     case "prod":
       publicPath = "https://example.com/static/bundles/prod/";
       outputPath = resolve("bundles/prod");
@@ -20,12 +24,13 @@ module.exports = (env, argv) => {
       outputPath = resolve("bundles/stg");
       break;
     case "dev":
+    default:
       publicPath = "http://127.0.0.1:8000/static/bundles/dev/";
       outputPath = resolve("bundles/dev");
       break;
   }
 
-  switch (argv.mode) {
+  switch (mode) {
     case "production":
       output = {
         path: outputPath,
@@ -41,6 +46,7 @@ module.exports = (env, argv) => {
       break;
 
     case "development":
+    default:
       output = {
         path: outputPath,
         filename: "[name].js",
@@ -53,64 +59,57 @@ module.exports = (env, argv) => {
       });
       fileLoaderName = "[path][name].[ext]";
       break;
-    default:
-      break;
   }
 
   return {
-    mode: argv.mode,
+    mode: mode,
     entry: "./index.js",
     output,
     module: {
       rules: [
-        // Scripts
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: "babel-loader"
+          use: "babel-loader"
         },
-        // Styles
         {
           test: /\.(sa|sc|c)ss$/,
           use: [
             MiniCssExtractPlugin.loader,
             {
               loader: "css-loader",
-              options: {
-                sourceMap: true
-              }
+              options: { sourceMap: true }
             },
             {
               loader: "sass-loader",
               options: {
-                sourceMap: true
+                sourceMap: true,
+                implementation: require("sass")
               }
             }
           ]
         },
-        // Fonts
         {
           test: /\.(eot|otf|ttf|woff|woff2)(\?v=[0-9.]+)?$/,
-          loader: "file-loader",
-          options: {
-            outputPath: "fonts",
-            name: fileLoaderName
+          type: "asset/resource",
+          generator: {
+            filename: "fonts/" + fileLoaderName
           }
         },
-        // Images
         {
           test: /\.(png|svg|jpg)(\?v=[0-9.]+)?$/,
-          loader: "file-loader",
-          options: {
-            outputPath: "images",
-            name: fileLoaderName
+          type: "asset/resource",
+          generator: {
+            filename: "images/" + fileLoaderName
           }
         }
       ]
     },
     plugins: [
       new BundleTracker({
-        filename: `bundles/webpack-bundle.${env}.json`
+        path: resolve("bundles"),
+        filename: `webpack-bundle.${environment}.json`,
+        publicPath: publicPath
       }),
       extractCssPlugin
     ],

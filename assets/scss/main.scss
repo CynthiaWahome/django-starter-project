@@ -1,7 +1,7 @@
-@import "variables";
-@import "libs/reset";
-@import "structure";
+@use "variables";
+@use "libs/reset";
+@use "structure";
 
 body {
-  color: $color;
+  color: variables.$color;
 }

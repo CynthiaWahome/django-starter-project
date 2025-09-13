@@ -1,6 +1,9 @@
-from celery import task
+import logging
 
+from celery import shared_task
 
-@task
-def task_dummy(arg_a, arg_b):
-    print("Called task_dummy with a:%s b:%s" % (arg_a, arg_b))
+logger = logging.getLogger(__name__)
+
+@shared_task
+def task_dummy(arg_a: object, arg_b: object) -> None:
+    logger.info(f"Called task_dummy with a:{arg_a} b:{arg_b}")
