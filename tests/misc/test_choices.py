@@ -1,34 +1,34 @@
 from apps.misc.choices import Choices
 
 
+# ...existing code...
 def test_choices():
-    class CarType(Choices):
-        SUV = "SUV"
-        SEDAN = ("SD", "Sedan")
-        HATCHBACK = ("HB", "Hatchback")
-        CONVERTIBLE = ("CV", "Convertible")
-        COUPE = ("CP", "Coupe")
+    class AccessoryType(Choices):
+        WIG = "WIG"
+        NECKLACE = ("NC", "Necklace")
+        BRACELET = ("BR", "Bracelet")
+        EARRINGS = ("EA", "Earrings")
+        HANDBAG = ("HB", "Handbag")
 
-    assert set(CarType.keys()) == set(["SUV", "SD", "HB", "CV", "CP"])
+    assert set(AccessoryType.keys()) == {"WIG", "NC", "BR", "EA", "HB"}
 
-    assert set(CarType.choices()) == set(
-        [
-            ("SUV", "SUV"),
-            ("SD", "Sedan"),
-            ("HB", "Hatchback"),
-            ("CV", "Convertible"),
-            ("CP", "Coupe"),
-        ]
-    )
+    assert set(AccessoryType.choices()) == {
+        ("WIG", "WIG"),
+        ("NC", "Necklace"),
+        ("BR", "Bracelet"),
+        ("EA", "Earrings"),
+        ("HB", "Handbag"),
+    }
 
 
 def test_choices_accessor():
-    class CarType(Choices):
-        SUV = "SUV"
-        SEDAN = ("SD", "Sedan")
-        HATCHBACK = ("HB", "Hatchback")
-        CONVERTIBLE = ("CV", "Convertible")
-        COUPE = ("CP", "Coupe")
+    class AccessoryType(Choices):
+        WIG = "WIG"
+        NECKLACE = ("NC", "Necklace")
+        BRACELET = ("BR", "Bracelet")
+        EARRINGS = ("EA", "Earrings")
+        HANDBAG = ("HB", "Handbag")
 
-    assert CarType.SUV == "SUV"
-    assert CarType.SEDAN == "SD"
+    assert AccessoryType.WIG == "WIG"
+    assert AccessoryType.NECKLACE == "NC"
+# ...existing code...
