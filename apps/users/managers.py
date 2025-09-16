@@ -29,6 +29,7 @@ class UserManager(base_models.BaseUserManager["User"]):
             raise ValueError("Superuser must have is_superuser=True.")
         return self.create_user(email, password, **extra_fields)
 
+
 class AllUsersManager(base_models.BaseUserManager):
     def get_queryset(self):
         # Return all users, including soft-deleted

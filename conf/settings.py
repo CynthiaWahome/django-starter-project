@@ -12,7 +12,7 @@ env.read_env(env_file=root_path(".env"))
 # Basic Config
 # -----------------------------------------------------------------------------
 ENV = env("ENV", default="prod")
-assert ENV in ["dev", "test", "prod", "qa"]
+assert ENV in ["dev", "test", "prod", "qa"]  # noqa: B101  # noqa: B101
 DEBUG = env.bool("DEBUG", default=False)
 BASE_DIR = root_path()
 ROOT_URLCONF = "conf.urls"

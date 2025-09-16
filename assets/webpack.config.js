@@ -7,7 +7,7 @@ const resolve = path.resolve.bind(path, __dirname);
 module.exports = (env = {}, argv = {}) => {
   const environment = env.NODE_ENV || process.env.NODE_ENV || 'dev';
   const mode = argv.mode || 'development';
-  
+
   let output;
   let extractCssPlugin;
   let fileLoaderName;

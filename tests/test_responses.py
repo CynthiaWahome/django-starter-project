@@ -1,6 +1,7 @@
 """
 Unit tests for common response utilities.
 """
+
 from rest_framework import status
 
 from apps.common.responses import APIResponse
@@ -11,10 +12,7 @@ class TestAPIResponse:
 
     def test_success_response_structure(self):
         """Test success response has correct structure."""
-        response = APIResponse.success(
-            data={"key": "value"},
-            message="Test success"
-        )
+        response = APIResponse.success(data={"key": "value"}, message="Test success")
 
         assert response.status_code == status.HTTP_200_OK
         assert response.data["success"] is True
@@ -25,10 +23,7 @@ class TestAPIResponse:
 
     def test_error_response_structure(self):
         """Test error response has correct structure."""
-        response = APIResponse.error(
-            message="Test error",
-            error_code="TEST_ERROR"
-        )
+        response = APIResponse.error(message="Test error", error_code="TEST_ERROR")
 
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.data["success"] is False
@@ -40,7 +35,7 @@ class TestAPIResponse:
         """Test validation error response."""
         field_errors = {
             "email": ["This field is required."],
-            "password": ["Password too weak."]
+            "password": ["Password too weak."],
         }
 
         response = APIResponse.validation_error(field_errors)

@@ -1,6 +1,7 @@
 """
 Custom validators for user-related fields and files.
 """
+
 import re
 
 from django.contrib.auth import get_user_model
@@ -16,13 +17,13 @@ def validate_strong_password(password: str) -> None:
     if len(password) < 8:
         errors.append("Password must be at least 8 characters long.")
 
-    if not re.search(r'[A-Z]', password):
+    if not re.search(r"[A-Z]", password):
         errors.append("Password must contain at least one uppercase letter.")
 
-    if not re.search(r'[a-z]', password):
+    if not re.search(r"[a-z]", password):
         errors.append("Password must contain at least one lowercase letter.")
 
-    if not re.search(r'\d', password):
+    if not re.search(r"\d", password):
         errors.append("Password must contain at least one digit.")
 
     if not re.search(r'[!@#$%^&*()_+\-=\[\]{};\':"\\|,.<>\?]', password):
@@ -55,7 +56,9 @@ def validate_email_and_password(email, password):
 def validate_password_strength(password, min_length=8):
     """Enforce password strength requirements."""
     if len(password) < min_length:
-        raise ValidationError(f"Password must be at least {min_length} characters long.")
+        raise ValidationError(
+            f"Password must be at least {min_length} characters long."
+        )
 
     if not re.search(r"[A-Za-z]", password):
         raise ValidationError("Password must contain at least one letter.")

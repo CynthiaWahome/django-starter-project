@@ -1,7 +1,6 @@
 from apps.misc.choices import Choices
 
 
-# ...existing code...
 def test_choices():
     class AccessoryType(Choices):
         WIG = "WIG"
@@ -31,4 +30,3 @@ def test_choices_accessor():
 
     assert AccessoryType.WIG == "WIG"
     assert AccessoryType.NECKLACE == "NC"
-# ...existing code...

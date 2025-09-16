@@ -26,7 +26,12 @@ class UserAdmin(CoreUserAdmin):
         ("Important dates", {"fields": ("last_login", "date_joined")}),
     )
 
-    add_fieldsets = ("Authentication", {"fields": ("email", "password1", "password2"),})
+    add_fieldsets = (
+        "Authentication",
+        {
+            "fields": ("email", "password1", "password2"),
+        },
+    )
 
 
 admin.site.unregister(base_models.Group)

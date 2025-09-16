@@ -1,6 +1,7 @@
 """
 Global pytest configuration and fixtures.
 """
+
 import factory
 import pytest
 from django.contrib.auth import get_user_model
@@ -30,7 +31,7 @@ def user():
         email="test@example.com",
         password="TestPass123!",  # noqa: S106
         first_name="Test",
-        last_name="User"
+        last_name="User",
     )
 
 
@@ -41,7 +42,7 @@ def superuser():
         email="admin@example.com",
         password="AdminPass123!",  # noqa: S106,
         first_name="Admin",
-        last_name="User"
+        last_name="User",
     )
 
 
