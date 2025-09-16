@@ -1,9 +1,10 @@
 """
 Reusable model and view mixins.
 """
+
 from django.db import models
 from django.utils import timezone
-from rest_framework import viewsets
+from rest_framework import mixins, viewsets
 
 from .responses import APIResponse
 
@@ -40,30 +41,31 @@ class SoftDeleteMixin(models.Model):
         self.save()
 
 
-class StandardizedResponseMixin(viewsets.GenericViewSet):
+class StandardizedResponseMixin(
+    viewsets.GenericViewSet,
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+):
     """Mixin to provide standardized API responses for ViewSets."""
 
     def list(self, request, *args, **kwargs):
         """Override list to use standardized response."""
         response = super().list(request, *args, **kwargs)
         return APIResponse.success(
-            data=response.data,
-            message="Data retrieved successfully"
+            data=response.data, message="Data retrieved successfully"
         )
 
     def create(self, request, *args, **kwargs):
         """Override create to use standardized response."""
         response = super().create(request, *args, **kwargs)
         return APIResponse.success(
-            data=response.data,
-            message="Resource created successfully",
-            status_code=201
+            data=response.data, message="Resource created successfully", status_code=201
         )
 
     def destroy(self, request, *args, **kwargs):
         """Override destroy to use standardized response."""
         super().destroy(request, *args, **kwargs)
         return APIResponse.success(
-            message="Resource deleted successfully",
-            status_code=204
+            message="Resource deleted successfully", status_code=204
         )

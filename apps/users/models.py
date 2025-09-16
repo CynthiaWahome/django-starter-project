@@ -10,7 +10,7 @@ class User(
     base_models.AbstractBaseUser,
     base_models.PermissionsMixin,
     TimestampMixin,
-    SoftDeleteMixin
+    SoftDeleteMixin,
 ):
     email = models.EmailField(unique=True)
     is_active = models.BooleanField(default=True)
@@ -21,8 +21,8 @@ class User(
     REQUIRED_FIELDS = []
     USERNAME_FIELD = "email"
 
-    objects = managers.UserManager()         # Default manager
-    all_objects = managers.AllUsersManager() # Manager to include soft-deleted users
+    objects = managers.UserManager()  # Default manager
+    all_objects = managers.AllUsersManager()  # Manager to include soft-deleted users
 
     def get_full_name(self):
         return self.email

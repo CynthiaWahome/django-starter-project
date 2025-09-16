@@ -1,4 +1,3 @@
-
 from django.core.paginator import Paginator
 from django.db.models import QuerySet
 
@@ -13,7 +12,7 @@ class PaginationUtility:
         per_page: int,
         serializer_class=None,
         serializer_context: dict | None = None,
-        message: str = "Data retrieved successfully"
+        message: str = "Data retrieved successfully",
     ):
         """
         Paginated response with comprehensive metadata.
@@ -35,13 +34,15 @@ class PaginationUtility:
         # Serialize data if serializer provided
         if serializer_class and page_obj.object_list:
             serializer = serializer_class(
-                page_obj.object_list,
-                many=True,
-                context=serializer_context or {}
+                page_obj.object_list, many=True, context=serializer_context or {}
             )
             data = serializer.data
         else:
-            data = list(page_obj.object_list.values()) if hasattr(page_obj.object_list, 'values') else list(page_obj.object_list)
+            data = (
+                list(page_obj.object_list.values())
+                if hasattr(page_obj.object_list, "values")
+                else list(page_obj.object_list)
+            )
 
         metadata = {
             "pagination": {
@@ -51,13 +52,13 @@ class PaginationUtility:
                 "per_page": per_page,
                 "has_next": page_obj.has_next(),
                 "has_previous": page_obj.has_previous(),
-                "next_page": page_obj.next_page_number() if page_obj.has_next() else None,
-                "previous_page": page_obj.previous_page_number() if page_obj.has_previous() else None,
-                "items_on_page": len(data)
+                "next_page": page_obj.next_page_number()
+                if page_obj.has_next()
+                else None,
+                "previous_page": page_obj.previous_page_number()
+                if page_obj.has_previous()
+                else None,
+                "items_on_page": len(data),
             }
         }
-        return APIResponse.success(
-            data=data,
-            message=message,
-            metadata=metadata
-        )
+        return APIResponse.success(data=data, message=message, metadata=metadata)

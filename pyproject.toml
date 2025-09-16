@@ -27,24 +27,24 @@ dependencies = [
     "django>=5.2.0",
     "django-environ>=0.11.2",
     "psycopg[binary]>=3.1.13",
-    
+
     # Task Queue & Cache
     "celery[redis]>=5.3.4",
     "redis>=5.0.1",
-    
+
     # API & CORS
     "djangorestframework>=3.14.0",
     "django-cors-headers>=4.3.1",
-    
+
     # File Handling
     "pillow>=10.1.0",
     "django-storages[s3]>=1.14.2",
-    
+
     # Security & Monitoring
     "sentry-sdk[django]>=1.38.0",
     "django-csp>=3.7",
     "django-permissions-policy>=4.19.0",
-    
+
     # Frontend Integration
     "django-webpack-loader>=3.0.1",
 ]
@@ -55,7 +55,7 @@ development = [
     "ruff>=0.1.6",
     "mypy>=1.7.1",
     "django-stubs[compatible-mypy]>=4.2.7",
-    
+
     # Testing
     "pytest>=7.4.3",
     "pytest-django>=4.7.0",
@@ -63,12 +63,13 @@ development = [
     "pytest-xdist>=3.3.1",
     "hypothesis[django]>=6.92.1",
     "factory-boy>=3.3.0",
-    
+
     # Development Tools
     "django-debug-toolbar>=4.2.0",
     "django-extensions>=3.2.3",
     "pre-commit>=3.5.0",
-    
+    "requests>=2.31.0",
+
     # Documentation
     "sphinx>=7.2.6",
     "sphinx-rtd-theme>=1.3.0",
@@ -88,10 +89,14 @@ build-backend = "hatchling.build"
 target-version = "py312"
 line-length = 88
 
+exclude = [
+    "*/migrations/*",
+]
+
 [tool.ruff.lint]
 select = [
     "E",   # pycodestyle errors
-    "W",   # pycodestyle warnings  
+    "W",   # pycodestyle warnings
     "F",   # pyflakes
     "I",   # isort
     "N",   # pep8-naming
@@ -112,10 +117,16 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"*/migrations/*.py" = ["E501", "N806", "N999"]
+"apps/common/mixin.py" = ["A003"]
+"apps/misc/management/commands/test_celery.py" = ["A003"]
+"scripts/setup_project.py" = ["S603"]
+"apps/misc/management/commands/celery_autoreload.py" = ["S603"]
 "*/settings/*.py" = ["F403", "F401"]
 "*/tests/*.py" = ["S101", "S106"]
 "manage.py" = ["T20"]
+
+[tool.bandit]
+exclude_dirs = ["tests"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["apps", "conf", "common"]
